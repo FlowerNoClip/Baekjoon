@@ -18,25 +18,23 @@ int main() {
 
     stack<int> st;
     int num = 1;
-    vector<string> result; // ✅ 결과 저장용 벡터
+    vector<string> result;
 
     for (int i = 0; i < N; i++) {
-        while (num <= arr[i]) { 
+        while (num <= arr[i]) {
             st.push(num++);
-            result.push_back("+"); // ✅ 연산 저장
+            result.push_back("+");
         }
 
         if (!st.empty() && st.top() == arr[i]) {
             st.pop();
-            result.push_back("-"); // ✅ 연산 저장
-        } 
+            result.push_back("-");
+        }
         else {
-            cout << "NO\n"; // ❌ 불가능한 경우 즉시 종료
+            cout << "NO\n";
             return 0;
         }
     }
-
-    // ✅ 최종적으로 한 번에 출력
     for (const string& op : result) {
         cout << op << "\n";
     }
