@@ -19,10 +19,20 @@ using namespace std;
 
 int main() {
     FAST_IO;
-    string a, b;
+    int a, b;
     cin >> a >> b;
-    reverse(a.begin(), a.end());
-    reverse(b.begin(), b.end());
-    int result = max(stoi(a), stoi(b));
-    cout << result;
+    string tempa, tempb;
+    while(a)
+    {
+        tempa += (a%10) + '0';
+        a /= 10;
+    }
+
+    while(b)
+    {
+        tempb += (b%10) + '0';
+        b /= 10;
+    }
+    
+    cout << max(stoi(tempa),stoi(tempb)) ;
 }
