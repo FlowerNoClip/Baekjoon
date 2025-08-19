@@ -1,48 +1,49 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include<bits/stdc++.h>
 using namespace std;
-
-int main() {
-
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    vector <int> spy;
-    vector <int> heights(9);
-    vector <int> real;
-
-    int heightSum = 0;
-    
-    for (int i = 0; i < heights.size(); i++) {
-        cin >> heights[i];
-        heightSum += heights[i];
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define ll long long 
+int a[9];
+int n = 9, r = 7;
+void solved()
+{
+    int sum = 0;
+    for(int i = 0; i < r; i++)
+    {
+        sum += a[i];
     }
 
-    bool found = false;
-    for (int i = 0; i < 9 && !found; i++) {
-        for (int j = i + 1; j < 9; j++) {
-            if (heightSum - heights[i] - heights[j] == 100) {
-                heights[i] = heights[j] = -1;  // 제외할 난쟁이를 -1로 표시
-                found = true;  // 두 명의 스파이를 찾으면 반복 종료
-                break;
-            }
-        }
+    if(sum == 100)
+    {
+        sort(a,a+7);
+        for(int i = 0; i < r; i++) cout << a[i] << "\n";
+        exit(0);
     }
-
-    for (int i = 0; i < 9; i++) {
-        if (heights[i] != -1) {
-            real.push_back(heights[i]);
-        }
-    }
-
-
-    
-    sort(real.begin(),real.end());
-    for (int i = 0; i < real.size(); i++) {
-        cout << real[i] << endl;
+}
+void makePermutation(int n, int r, int depth)
+{
+    if(depth == r)
+    {
+        solved();
+        return;
     }
     
+
+    for(int i = depth; i < n; i++)
+    {
+        swap(a[i], a[depth]);
+        makePermutation(n,r,depth+1);
+        swap(a[i], a[depth]);        
+    }
+}
+int main()
+{
+    FAST_IO;
+    
+    for(int i = 0; i < 9; i++)
+    {
+        int temp;
+        cin >> a[i];
+    }
+
+    makePermutation(n, r, 0);
 }
