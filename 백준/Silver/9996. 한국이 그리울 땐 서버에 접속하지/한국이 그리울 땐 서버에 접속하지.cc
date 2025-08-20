@@ -8,36 +8,29 @@ int main()
     FAST_IO;
     int N; cin >> N;
     string tempstr; cin >> tempstr;
-    string perfix, suffix;
-    bool flag = true;
-    for(int i = 0; i < tempstr.length(); i++)
+    int pos = tempstr.find('*');
+    string start = tempstr.substr(0, pos);
+    string end = tempstr.substr(pos+1);
+
+    while(N--)
     {
-        if(tempstr[i] == '*')
+        string s; cin >> s;
+        if(start.size() + end.size() > s.size())
         {
-            flag = false; 
-            continue;
+            cout << "NE" << '\n';
         }
-        if(flag)
+        else
         {
-            perfix += tempstr[i];
-        }
-        else if(!flag)
-        {
-            suffix += tempstr[i];
+            if(start == s.substr(0, start.size()) && end == s.substr(s.size() - end.size()))
+            {
+                cout << "DA" << '\n';
+            }
+            else
+            {
+                cout << "NE" << '\n';
+            }
         }
     }
 
-    while (N--) {
-        string str; cin >> str;
 
-        if (str.size() < perfix.size() + suffix.size()) {
-            cout << "NE\n";
-            continue;
-        }
-
-        bool per = (str.compare(0, perfix.size(), perfix) == 0);
-        bool suf = (str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0);
-
-        cout << ((per && suf) ? "DA\n" : "NE\n");
-    }
 }
