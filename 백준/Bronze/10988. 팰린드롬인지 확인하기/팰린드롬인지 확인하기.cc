@@ -6,16 +6,18 @@ using namespace std;
 int main()
 {
     FAST_IO;
-    string str; cin >> str;
-
-    for(int i = 0; i < str.length()/2; i++)
+    string str, temp;
+    
+    cin >> str;
+    temp = str;
+    reverse(temp.begin(), temp.end());
+    if(temp == str)
     {
-        if(str[i] != str[str.length() - i - 1])
-        {
-            cout << 0;
-            return 0;
-        }
+        cout << 1;
+    }
+    else
+    {
+        cout << 0;
     }
 
-    cout << 1;
 }
