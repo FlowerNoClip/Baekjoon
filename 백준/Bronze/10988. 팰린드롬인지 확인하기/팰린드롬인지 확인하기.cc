@@ -1,34 +1,21 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
+#include<bits/stdc++.h>
 using namespace std;
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define ll long long 
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    
-    string s;
-    bool t;
-    cin >> s;
+int main()
+{
+    FAST_IO;
+    string str; cin >> str;
 
-    for (int i = 0; i < (s.length()/2); i++) 
+    for(int i = 0; i < str.length()/2; i++)
     {
-        if (s[i] == s[s.length()-1-i]) {
-            t = true;
+        if(str[i] != str[str.length() - i - 1])
+        {
+            cout << 0;
+            return 0;
         }
-        else {
-            t = false;
-            break;
-        }
-    }
-    
-    if (t == true) {
-        cout << 1;
-    }
-    else {
-        cout << 0;
     }
 
+    cout << 1;
 }
