@@ -1,62 +1,63 @@
-#include <iostream>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define ll long long 
 using namespace std;
-int dx[] = { 0, 0, -1, 1 };
-int dy[] = { 1, -1, 0, 0 };
-
-void dfs(int x, int y, vector<vector<int>>& arr, vector<vector<bool>>& visited)
+const int max_n = 54;
+int dx[] = {0, 0, 1, -1};
+int dy[] = {1, -1, 0, 0};
+int visited[max_n][max_n] = {0};
+void bfs(int x, int y, vector<vector<int>>& board)
 {
-    visited[x][y] = true;
-    for (int i = 0; i < 4; i++) { 
-        int nx = x + dx[i];
-        int ny = y + dy[i];
-        if (nx >= 0 && nx < arr.size() && ny >= 0 && ny < arr[0].size()) {
-            if (!visited[nx][ny] && arr[nx][ny] == 1) {
-                visited[nx][ny] = true;
-                dfs(nx, ny, arr, visited);
-            }
+    queue<pair<int, int>> q;
+    q.push({x, y});
+    visited[x][y] = 1;
+    while(q.size())
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+        for(int i = 0; i < 4; i++)
+        {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            //if(nx > 0 || nx >= board[0].size() || ny < 0 || ny >= board.size() || board[nx][ny] == 0) continue;
+            if(nx < 0 || nx >= board.size() || ny < 0 || ny >= board[0].size() || board[nx][ny] == 0) continue;
+
+            if(visited[nx][ny]) continue;
+
+            q.push({nx, ny});
+            visited[nx][ny] = 1;
         }
     }
 
 }
-int main() {
-    int dy[] = { 0, 0, -1, 1 };
-    int dx[] = { 1, -1, 0, 0 };
+int main()
+{
     int T; cin >> T;
-    int N, M;
-    int A;
-
-    
-    while (T--)
+    while(T--)
     {
-        cin >> M >> N >> A;
-        vector<vector<int>> arr(M, vector<int>(N, 0));
-        vector<vector<bool>> visited(M, vector<bool>(N, 0));
-        for (int i = 0; i < A; i++)
-        {
-            int x, y;
-            cin >> x >> y;
-            arr[x][y] = 1;
-        }
         int cnt = 0;
-        for (int i = 0; i < arr.size(); i++)
+        memset(visited, 0, sizeof(visited));
+        int N, M, S; cin >> N >> M >> S;
+        vector<vector<int>> arr(N, vector<int>(M));
+
+        for(int i = 0; i < S; i++)
         {
-            for (int j = 0; j < arr[0].size(); j++)
+            int a, b; cin >> a >> b;
+            arr[a][b] = 1;
+        }
+        for(int i = 0; i < arr.size(); i++)
+        {
+            for(int j = 0; j < arr[0].size(); j++)
             {
-                if (!visited[i][j] && arr[i][j] == 1)
+                if(!visited[i][j] && arr[i][j] == 1)
                 {
-                    dfs(i, j, arr, visited);
+                    bfs(i,j,arr);
                     cnt++;
                 }
             }
         }
 
-        cout << cnt << endl;
-        
+        cout << cnt << '\n';
     }
-
-    
-
-    return 0;
 }
