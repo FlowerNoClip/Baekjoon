@@ -1,54 +1,32 @@
 #include <bits/stdc++.h>
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long
 using namespace std;
+
 string vowels = "aeiou";
-const string nnn =  " is not acceptable.";
-const string yes =  " is acceptable.";
-string a;
+
 bool isVowel(char c) {
     return vowels.find(c) != string::npos;
 }
-bool first(string str)
-{
-    if (str.find_first_of(vowels) != string::npos)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+
+bool hasVowel(const string& str) {
+    for (char c : str) if (isVowel(c)) return true;
+    return false;
 }
-bool second(string str)
-{
-    char temp = ' ';
-    int cnt = 0;
-    for(char& a : str)
-    {
-        if(temp != a)
-        {
-            temp = a;
-            cnt = 0;
-        }
-        if(temp == a)
-        {
-            cnt++;
-        }
-        if(cnt >= 2 && temp != 'e' && temp != 'o')
-        {
+
+bool noDoubleExceptEO(const string& str) {
+    for (int i = 1; i < (int)str.size(); i++) {
+        if (str[i] == str[i-1] && str[i] != 'e' && str[i] != 'o') {
             return false;
         }
     }
-    
     return true;
-    
 }
-bool check(string s) {
+
+bool noThreeConsecutive(const string& str) {
     int cnt = 1;
-    for (int i = 1; i < s.size(); i++) {
-        if ((isVowel(s[i]) && isVowel(s[i-1])) ||
-            (!isVowel(s[i]) && !isVowel(s[i-1]))) {
+    for (int i = 1; i < (int)str.size(); i++) {
+        if ((isVowel(str[i]) && isVowel(str[i-1])) ||
+            (!isVowel(str[i]) && !isVowel(str[i-1]))) {
             cnt++;
         } else {
             cnt = 1;
@@ -57,46 +35,20 @@ bool check(string s) {
     }
     return true;
 }
-void text(bool _isYN)
-{
-    if(_isYN)
-    {
-        cout << '<' << a << '>' << yes<<'\n';
-    }
-    else
-    {
-        cout << '<' << a << '>' << nnn <<'\n';
-    }
+
+void printResult(const string& word, bool ok) {
+    cout << '<' << word << '>' 
+         << (ok ? " is acceptable." : " is not acceptable.") 
+         << '\n';
 }
-int main()
-{
+
+int main() {
     FAST_IO
-    while(true)
-    {
-        cin >> a;
-        
-        if (a == "end")
-        {
-            break;
-        }
-        if(!first(a))
-        {
-            text(false);
-            continue;
-        }
-        if(!second(a))
-        {
-            text(false);
-            continue;
-        }
-        if(!check(a))
-        {
-            text(false);
-            continue;
-        }
+    string word;
+    while (cin >> word) {
+        if (word == "end") break;
 
-        text(true);
-
-        
+        bool ok = hasVowel(word) && noDoubleExceptEO(word) && noThreeConsecutive(word);
+        printResult(word, ok);
     }
 }
