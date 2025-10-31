@@ -1,74 +1,38 @@
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    int M; cin >> M;
-    vector<int> arr(21, 0);
-    while (M--)
-    {
-        string temp;
-        cin >> temp;
-        if (temp == "add")
-        {
-            int num;
-            cin >> num;
-            if (arr[num] == 0)
-            {
-                arr[num] = 1;
-            }
+    cin.tie(nullptr);
+
+    int m, n = 0, x;
+    string s;
+
+    cin >> m;
+    while (m--) {
+        cin >> s;
+        if (s == "add") {
+            cin >> x;
+            n |= (1 << x);
         }
-        else if (temp == "remove")
-        {
-            int num;
-            cin >> num;
-            if (arr[num] == 1)
-            {
-                arr[num] = 0;
-            }
+        else if (s == "remove") {
+            cin >> x;
+            n &= ~(1 << x);
         }
-        else if (temp == "check")
-        {
-            int num;
-            cin >> num;
-            if (arr[num] == 1)
-            {
-                cout << 1 << "\n";
-            }
-            else
-            {
-                cout << 0 << "\n";
-            }
+        else if (s == "check") {
+            cin >> x;
+            cout << ((n & (1 << x)) ? 1 : 0) << '\n';
         }
-        else if (temp == "toggle")
-        {
-            int num;
-            cin >> num;
-            if (arr[num] == 1)
-            {
-                arr[num] = 0;
-            }
-            else
-            {
-                arr[num] = 1;
-            }
+        else if (s == "toggle") {
+            cin >> x;
+            n ^= (1 << x);
         }
-        else if (temp == "all")
-        {
-            for (int i = 0; i < arr.size(); i++)
-            {
-                arr[i] = 1;
-            }
+        else if (s == "all") {
+            n = (1 << 21) - 1;
         }
-        else if (temp == "empty")
-        {
-            for (int i = 0; i < arr.size(); i++)
-            {
-                arr[i] = 0;
-            }
+        else if (s == "empty") {
+            n = 0;
         }
     }
+    return 0;
 }
