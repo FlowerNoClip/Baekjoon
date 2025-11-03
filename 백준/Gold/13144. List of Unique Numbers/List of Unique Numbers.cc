@@ -1,46 +1,34 @@
-#include <iostream> 
-#include <string> 
-#include <vector> 
-#include <algorithm> 
-#include <queue> 
-#include <deque> 
-#include <iterator> 
-#include <list> 
-#include <stack> 
-#include <map> 
-#include <unordered_map>
-#include <set> 
-#include <unordered_set>
-#include <math.h> 
-#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long 
-#define INF 1e9+10 
-const ll LLINF = 2e9 + 1;
+#include <bits/stdc++.h>
 using namespace std;
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 
-int main() {
-    FAST_IO;
-    int N; cin >> N;
-    vector<int> arr(N);
-    vector<int> temp;
-    unordered_set<int> s;
-    for(int& a : arr) cin >> a;
-    int result = N;
-    int L = 0; int R = 0;
-    ll answer = 0;
-    while(L < N)
+long long s, e, cnt[1000001], n, a[100001];
+long long ret;
+
+int main()
+{
+    FAST_IO
+    cin >> n;
+    for(int i = 0; i < n; i++)
     {
-        while(R < N  && s.find(arr[R]) == s.end())
-        {
-            s.insert(arr[R]);
-            R++;
-
-            
-        }
-        answer +=(R-L);
-        s.erase(arr[L]);
-        L++;
+        cin >> a[i];
     }
 
-    cout << answer;
-   }
+    while(e < n)
+    {
+        if(!cnt[a[e]])
+        {
+            cnt[a[e]]++;
+            e++;
+        }
+        else
+        {
+            ret += (e - s);
+            cnt[a[s]] --;
+            s++;
+        }
+    }
+
+    ret += (long long) (e-s) * (e - s + 1) / 2;
+    cout << ret;
+}
