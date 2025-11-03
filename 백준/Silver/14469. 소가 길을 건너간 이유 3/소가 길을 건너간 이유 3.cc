@@ -14,27 +14,12 @@ int main()
     }
 
     sort(v.begin(), v.end());
-    leftNum = v[0].first;
-    rightNum = leftNum + v[0].second;
-    //3
-    for(int i = 1; i < n; i++)
+    int realTime = v[0].first + v[0].second;
+    for(int i = 1; i < v.size(); i++)
     {
-        if(rightNum > v[i].first)
-        // 3 > 5 X / 10 > 
-        {
-            leftNum = rightNum;
-            rightNum += v[i].second;
-        }
-        else
-        {
-            leftNum = v[i].first;
-            // 5
-            rightNum += v[i].second + v[i].first - rightNum;
-            // 3 + 7 = 10
-        }
+        realTime = max(realTime, v[i].first);
+        realTime += v[i].second;
     }
- // 1, 2
- // 5, 7
- // 8, 3
-    cout << rightNum;
+
+    cout << realTime << endl;
 }
