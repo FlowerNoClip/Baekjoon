@@ -1,54 +1,41 @@
-#include <iostream>
-#include <vector>
-#include <set>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
-struct jewelry {
-    int M;
-    int V;
-    bool operator<(jewelry j) {
-        if (V != j.V) return V > j.V; // 종료 시간이 다르면 종료 시간이 빠른 순으로 정렬
-        return M < j.M;
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+int n, k, value, price;
+vector<pair<int, int>> ju;
+priority_queue<int> pq;
+long long result = 0;
+vector<int> bag;
+int main()
+{
+    FAST_IO
+    cin >> n >> k;
+    for(int i = 0; i < n; i ++)
+    {
+        cin >> value >> price;
+        ju.push_back({value, price});
     }
-};
-
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    long long sum = 0;
-    int N, K ;
-    cin >> N >> K;
-    vector <jewelry> J(N);
-    multiset <int> bag;
-
-    for (int i = 0; i < N; i++) {
-        cin >> J[i].M >> J[i].V;
+    for(int i = 0; i < k; i++)
+    {
+        cin >> value;
+        bag.push_back(value);
     }
+    sort(ju.begin(), ju.end());
+    sort(bag.begin(), bag.end()); 
 
-    for (int i = 0; i < K; i++) {
-        int c; cin >> c;
-        bag.insert(c);
+    int j = 0;
+    for(int i = 0; i < k; i++)
+    {
+        while(j < n && ju[j].first <= bag[i])
+        {
+            pq.push(ju[j].second);
+            j++;
+        }
+        if(!pq.empty())
+        {
+            result += pq.top();
+            pq.pop();
+        }
     }
-
-    sort(J.begin(), J.end());
-    
-    for (int i = 0; i < N; i++) {
-        auto it = bag.lower_bound(J[i].M);
-        if (it == bag.end()) continue;
-
-        sum += J[i].V;
-        bag.erase(it);
-    }
-    
-
-    cout << sum;
-
-    
-
-    }
-
-
-
+    cout << result;
+}
