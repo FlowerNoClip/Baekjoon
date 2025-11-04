@@ -1,40 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-int n, k;
+
 int main()
 {
     FAST_IO
+    int n, k, temp, cnt = 0;
     cin >> n >> k;
     vector<int> arr(k);
-    vector<int> plug;
-    int cnt = 0;
     for(int i = 0; i < k; i++)
     {
         cin >> arr[i];
     }
+    vector<int> plug;
+
     for(int i = 0; i < k; i++)
     {
-        int x = arr[i];
         bool pluged = false;
-        
-        for(int j : plug)
+        for(int ace : plug)
         {
-            if(j == x)
+            if(ace == arr[i])
             {
                 pluged = true;
                 break;
-            } 
-        } 
-        if(pluged) continue;
-
-        if ((int)plug.size() < n)
-        {
-            plug.push_back(x);
-            continue;
+            }
         }
-        int idx = -1, far = -1;
-        for(int j = 0; j < n; j++)
+        if(pluged) continue;
+        if(plug.size() < n)
+        {
+            plug.push_back(arr[i]);
+            continue;
+        } 
+        
+        int idx = -1; int far = -1;
+        for(int j = 0; j < plug.size(); j++)
         {
             int next = -1;
             for(int t = i+1; t < k; t++)
@@ -46,14 +45,14 @@ int main()
                 }
             }
             if(next == -1) {idx = j; break;}
-            if(next > far)
+            if(next > far) 
             {
                 far = next;
                 idx = j;
             }
         }
-        plug[idx] = x;
+        plug[idx] = arr[i];
         cnt++;
     }
-    cout << cnt; 
+cout << cnt;
 }
