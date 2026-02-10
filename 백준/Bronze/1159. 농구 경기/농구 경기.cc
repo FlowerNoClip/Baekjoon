@@ -1,43 +1,39 @@
-#include<bits/stdc++.h>
-using namespace std;
+#include <bits/stdc++.h>
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long 
+using namespace std;
 
 int main()
 {
-    FAST_IO;
-    int N; cin >> N;
-    vector<char> v;
-    vector<int> arr(27,0);
-    string temp;
-    vector<char> result;
-    while(N--)
-    {        
-        cin >> temp;
-        v.push_back(temp[0]);
-    }
-    sort(v.begin(), v.end());
-    for(int i = 0; i < v.size(); i++)
-    {
-        arr[(int)v[i] - 'a'] ++;
-    }
-    for(int i = 0; i < arr.size(); i++)
-    {
-        if(arr[i] >= 5)
-        {
-            result.push_back('a' + i);
-        }
-    }
+    // 1. 입력을 받을때 첫글자를 카운팅 배열로 카운팅 한다
+    // 2. 나중에 카운팅 배열에서 5이상인 경우가 나오면 정답 배열에 넣어둔다
+    // 3. 만약 result.size() 가 null 이면 PREDAJA 를 출력한다
 
-    if(!result.empty()) 
+    int N; cin >> N;
+    vector<char> a;
+    int cnt[26] = {0};
+    for(int i = 0; i < N; i++)
     {
-        for(char c : result)
+        string temp; cin >> temp;
+        cnt[temp[0] - 'a']++;       
+    }
+    for(int i = 0; i < 26; i++)
+    {
+        if(cnt[i] >= 5)
         {
-            cout << c;
+            a.push_back(i + 'a');
         }
     }
-    else
+    //sort(a.begin(), a.end());
+    if(!a.size())
     {
         cout << "PREDAJA";
     }
+    else
+    {
+        for(auto i: a)
+        {
+            cout << i;
+        }
+    }
+    
 }
