@@ -1,30 +1,24 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <unordered_set>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define ll long long
 using namespace std;
 
-long long mod_exp(long long A, long long B, long long C) {
-    if (B == 0) return 1;
-    long long half = mod_exp(A, B / 2, C);
-    half = (half * half) % C;
-    if (B % 2 == 1) {
-        half = (half * A) % C;
-    }
+ll divide(ll a, ll b, ll c) {
+    if (b == 0) return 1 % c;
+    if (b == 1) return a % c;
 
-    return half;
+    ll temp = divide(a, b/2, c);
+    temp = (temp * temp) % c;
 
+    if (b % 2 == 1) temp = (temp * a) % c;
+    return temp;
 }
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-
-    long long A, B, C;
+int main()
+{
+    //A * B / C = ((A%C) * (B % C)) % C
+    FAST_IO
+    int A, B, C;
     cin >> A >> B >> C;
-
-    cout << mod_exp(A, B, C);
-
-
+    cout << divide(A, B, C) << '\n';
 
 }
