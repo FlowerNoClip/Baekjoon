@@ -1,28 +1,45 @@
-#include<bits/stdc++.h>
-using namespace std;
+#include <bits/stdc++.h>
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long 
+using namespace std;
 
 int main()
 {
-    FAST_IO;
-    int N; cin >> N;
-    vector<string> v(N);
+    FAST_IO
     
-    for(string& s: v)
+    string s;
+    int N; cin >> N;
+    
+    int cnt = 0;
+    while(N--)
     {
         cin >> s;
-    }
-    int cnt = 0;
-    for (int i = 0; i < N; i++) {
         stack<char> st;
-        for (char c : v[i]) 
+        for(int i = 0; i < s.length(); i++)
         {
-            if (!st.empty() && st.top() == c) st.pop();
-            else st.push(c);
+            if(st.empty())
+            {
+                st.push(s[i]);
+            }
+            else if(st.top() == s[i])
+            {
+                st.pop();
+            }
+            else if(st.top() != s[i])
+            {
+                st.push(s[i]);
+            }
+            
         }
-        if (st.empty()) cnt++; 
-    }
+        if(st.empty())
+        {
+            cnt++;
+        }
 
-    cout << cnt << endl;
+    }
+    
+    
+    cout << cnt << '\n';
+
+
+
 }
