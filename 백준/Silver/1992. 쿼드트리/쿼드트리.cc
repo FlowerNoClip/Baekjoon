@@ -1,49 +1,58 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
+string str = "";
 
-void QuadTree(int x, int y, int N, vector<vector<int>> S) {
-    bool isUniform = true;
-    int temp = S[x][y];
-    for (int i = x; i < x+N; i++) {
-        for (int j = y; j < y+N; j++) {
-            if (S[i][j] != temp) {
-                isUniform = false;
-                break;
+bool same(int y, int x, int ty, int tx, vector<vector<int>> & board)
+{
+    int tempNum = board[y][x];
+    for(int i = y; i < ty; i++)
+    {
+        for(int j = x; j < tx; j++)
+        {
+            if(tempNum != board[i][j])
+            {
+                return false;
             }
         }
-        if (!isUniform) break;
     }
-    if (isUniform) {
-        cout << temp; 
-    }
-     else {
-         cout << "("; // 영역 분할 시작
-         int half = N / 2;
-         QuadTree(x, y, half, S);                // 좌상
-         QuadTree(x, y + half, half, S);         // 우상
-         QuadTree(x + half, y, half, S);         // 좌하
-         QuadTree(x + half, y + half, half, S);  // 우하
-         cout << ")"; // 영역 분할 끝
-        }
+
+    return true;
 }
-
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int N;
-    cin >> N;
-    vector<vector<int>> S(N, vector<int>(N));
-
-    for (int i = 0; i < N; i++) {
-        string row;
-        cin >> row;
-        for (int j = 0; j < N; j++) {
-            S[i][j] = row[j] - '0';
+void quadTree(int y, int x, int ty, int tx, vector<vector<int>>& board)
+{
+    if(ty -y == 1 && tx - x == 1)
+    {
+        str += to_string(board[y][x]);
+        return;
+    }
+    if(same(y,x,ty,tx,board))
+    {
+        str += to_string(board[y][x]);
+        return;
+    }
+        int midY = (y + ty) / 2;
+        int midX = (x + tx) / 2;
+        str += '(';
+        quadTree(y, x, midY, midX, board); 
+        quadTree(y, midX, midY, tx, board); 
+        quadTree(midY, x, ty, midX, board);
+        quadTree(midY, midX, ty, tx, board);
+        str += ')';
+}
+int main()
+{
+    int N; cin >> N;
+    vector<vector<int>> board(N, vector<int>(N));
+    for(int i = 0; i < N; i++)
+    {
+        string temp; cin >> temp;
+        for(int j = 0; j < N; j++)
+        {
+            board[i][j] = temp[j]-'0';
         }
     }
-    QuadTree(0, 0, N, S);
-    return 0;
+
+    quadTree(0, 0, N, N, board);
+    cout << str << endl;
 }
