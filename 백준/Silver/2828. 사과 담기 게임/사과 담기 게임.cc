@@ -1,37 +1,32 @@
 #include <bits/stdc++.h>
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define ll long long
 using namespace std;
+
 int main()
 {
     FAST_IO
-    int N,M,J; cin >> N >> M >> J;
-    int answer = 0;
-    int left = 1;
-    int right = left + (M - 1); // 1 + (5-1) == 5 
+    int N, M, J; cin>> N >> M >> J;
+    int cl = 1, cr = M, ret = 0;
     for(int i = 0; i < J; i++)
     {
-        int apple; cin >> apple;
-        
-        if(apple >= left && apple <= right)
+        int apple; 
+        cin >> apple;
+        if(apple < cl)
         {
-            continue;   
+            int diff = cl - apple;
+            ret += diff;
+            cl-= diff;
+            cr -= diff;
         }
-        else if(apple < left)
+        else if(apple > cr)
         {
-            int move = left - apple;
-            answer += move;
-            left -= move;
-            right -= move;
-        }
-        else if(apple > right)
-        {
-            int move = apple - right;
-            answer += move;
-            left += move;
-            right += move;
+            int diff = apple - cr;
+            ret += diff;
+            cl+=diff;
+            cr+=diff;
         }
     }
+    cout << ret;
 
-    cout << answer << endl;
+
 }
