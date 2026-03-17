@@ -1,27 +1,29 @@
 #include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int H, W;
-    cin >> H >> W;
-
-    vector<vector<int>> arr(H, vector<int>(W, -1));
-
-    for (int i = 0; i < H; i++) {
-        string s; cin >> s;
-        int cloudPos = -1;
-        for (int j = 0; j < W; j++) {
-            if (s[j] == 'c') cloudPos = j;
-            if (cloudPos != -1) arr[i][j] = j - cloudPos;
+int main()
+{
+    FAST_IO
+    int N,M; cin >> N >> M;
+    vector<vector<int>> board(N, vector<int>(M, -1));
+    vector<vector<bool>> vistied(N, vector<bool>(M));
+    for(int i = 0; i < N; i++)
+    {
+        string temp; cin >> temp;
+        int cP = -1;
+        for(int j = 0; j < M; j++)
+        {
+            if(temp[j] == 'c') cP = j;
+            if(cP != -1) board[i][j] = j - cP;
         }
     }
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < M; j++)
+        {
 
-    for (int i = 0; i < H; i++) {
-        for (int j = 0; j < W; j++) {
-            cout << arr[i][j] << ' ';
+            cout <<board[i][j] << " ";
         }
         cout << '\n';
     }
