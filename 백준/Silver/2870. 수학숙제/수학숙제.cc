@@ -1,41 +1,53 @@
 #include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
+int main()
+{
     int N; cin >> N;
-    vector<string> numbers;
-
-    while (N--) {
-        string s; cin >> s;
-        string temp = "";
-        for (char c : s) {
-            if (isdigit(c)) {
-                temp += c;
-            } else {
-                if (!temp.empty()) {
-                    // 앞자리 0 제거
-                    while (temp.size() > 1 && temp[0] == '0')
-                        temp.erase(temp.begin());
-                    numbers.push_back(temp);
-                    temp = "";
+    vector<string> ret;
+    while(N--)
+    {
+        string temp; cin >> temp;
+        string str = "";
+        for(char c : temp)
+        {
+            if(isdigit(c))
+            {
+                str += c;
+            }
+            else
+            {
+                if(!str.empty())
+                {
+                    while(str.size() > 1 && str[0] == '0')
+                    {
+                        str.erase(0, 1);
+                    }
+                    ret.push_back(str);
+                    str = "";
                 }
             }
+            
         }
-        if (!temp.empty()) {
-            while (temp.size() > 1 && temp[0] == '0')
-                temp.erase(temp.begin());
-            numbers.push_back(temp);
+        if(!str.empty())
+        {
+            while(str.size() > 1 && str[0] == '0')
+            {
+                str.erase(0, 1);
+            }
+            ret.push_back(str);
+            str = "";
         }
     }
-    sort(numbers.begin(), numbers.end(), [](const string &a, const string &b) {
-        if (a.size() == b.size()) return a < b;
-        return a.size() < b.size();
+    sort(ret.begin(), ret.end(), [](const string &a, const string &b)
+    {
+        if(a.size() != b.size()) return a.size() < b.size();
+        return a < b;
     });
 
-    for (auto &num : numbers) {
-        cout << num << "\n";
+    for(const string &a : ret)
+    {
+        cout << a << '\n';
     }
 }
