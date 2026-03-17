@@ -6,15 +6,16 @@ using namespace std;
 int main()
 {
     FAST_IO
-     int N; cin >> N;
-    while (N--) 
+    int N; cin >> N;
+    while(N--)
     {
         int temp; cin >> temp;
         int answer = 0;
-        for (long long d = 5; d <= temp; d *= 5) {
-            answer += temp / d;
+        for(ll d = 5; d <= temp; d*=5)
+        {
+            answer += temp/d;
         }
         cout << answer << '\n';
     }
-
+    
 }
