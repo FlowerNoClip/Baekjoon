@@ -1,50 +1,48 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <map>
-#include <stack>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cout.tie(0); cin.tie(0);
 using namespace std;
 
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
+int main()
+{
     int T; cin >> T;
-    string temp;
-    
-    while (T--)
+    while(T--)
     {
-        cin >> temp;
         stack<char> st;
-        bool isValid = true;
+        string str; cin >> str;
 
-        for (char ch : temp)
+        for(int i = 0; i < str.length(); i++)
         {
-            if (ch == '(')
+            if(st.empty())
             {
-                st.push('(');
+                st.push(str[i]);
             }
-            else if (ch == ')')
+            else
             {
-                if (st.empty())
+                if(str[i] != st.top())
                 {
-                    isValid = false;
-                    break;
+                    if(st.top() == ')')
+                    {
+                        st.push(str[i]);
+                    }
+                    else
+                    {
+                        st.pop();
+                    }
                 }
-                st.pop();
+                else
+                {
+                    st.push(str[i]);
+                    
+                }
             }
         }
-
-        if (isValid && st.empty())
+        if(st.empty())
         {
-            cout << "YES\n";
+            cout << "YES" << '\n';
         }
         else
         {
-            cout << "NO\n";
+            cout << "NO" << '\n';
         }
-
     }
 }
