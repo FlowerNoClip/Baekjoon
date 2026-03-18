@@ -1,65 +1,58 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <stack>
-
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    string temp;
-    
+bool isTrue(char c)
+{
+    return c == 40 || c == 41 || c == 91 || c == 93;
+}
+
+int main()
+{
+    FAST_IO
     while (true)
     {
-        getline(cin, temp);
+        string str;
+        getline(cin, str);
+        if (str == ".") return 0;
         stack<char> st;
-        bool isValid = true;
-        if (temp == ".") break;
-        for (char v : temp)
+        for (int i = 0; i < str.length(); i++)
         {
-            if (v == '(')
+            if (st.empty() && isTrue(str[i]))
             {
-                st.push('(');
+                st.push(str[i]);
             }
-            else if (v == '[')
+            else if (!st.empty() && isTrue(str[i]))
             {
-                st.push('[');
-            }
-            if (v == ')')
-            {
-                if (st.empty() || st.top() != '(')
+                if (str[i] != st.top())
                 {
-                    isValid = false;
-                    break;
+                    if (st.top() == '(' && str[i] == 41)
+                    {
+                        st.pop();
+                    }
+                    else if (st.top() == '[' && str[i] == 93)
+                    {
+                        st.pop();
+                    }
+                    else
+                    {
+                        st.push(str[i]);
+                    }
                 }
-                    st.pop();
-            }
-            if (v == ']')
-            {
-                if (st.empty() || st.top() != '[')
+                else // str[i] == st.top() 인 경우
                 {
-                    isValid = false;
-                    break;
+                    st.push(str[i]);
                 }
-                    st.pop();
             }
-            
-        }
+        } // for문 끝
 
-        if (isValid && st.empty())
+        if (st.empty())
         {
-            cout << "yes\n";
+            cout << "yes" << '\n';
         }
         else
         {
-            cout << "no\n";
+            cout << "no" << '\n';
         }
-
     }
-    // 스택 제일 위에 있는 괄호가 현재 괄호과 매치가 된다면 pop.
-    // 스택이 비어있으면 YES 안비어있으면 NO
-    
-}
+} 
