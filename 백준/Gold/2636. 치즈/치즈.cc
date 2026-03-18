@@ -1,67 +1,97 @@
 #include <bits/stdc++.h>
-#define FAST_IO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define endl '\n'
 using namespace std;
-int a[104][104], visited[104][104];
-int dy[] = {-1, 1, 0, 0};
-int dx[] = {0, 0, -1, 1};
-int n, m, cnt, cnt2;
-vector<pair<int,int>> v;
-
-void go(int y, int x)
+vector<vector<int>> board;
+int dy[4] = {0, 0, 1, -1};
+int dx[4] = {1, -1, 0, 0};
+int ret, preCnt;
+bool isOk()
 {
-    visited[y][x] = 1;
-    if(a[y][x] == 1)
+    for(int i = 0; i < board.size(); i++)
     {
-        v.push_back({y, x});
-        return;
-    }
-    for(int i = 0; i < 4; i++)
-    {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if(ny < 0 || ny >= n || nx < 0 || nx >= m || visited[ny][nx]) continue;
-        go(ny, nx);
-    }
-    return;
-}
-int main() {
-    FAST_IO
-    cin >> n >> m;
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < m; j++)
+        for(int j = 0; j < board[0].size(); j++)
         {
-            cin >> a[i][j];
+            if(board[i][j] == 1)
+            {
+                return false;
+            }
         }
     }
+    return true;
+}
+void melt()
+{
+    queue<pair<int, int>> q;
+    vector<vector<bool>> visited(board.size(), vector<bool>(board[0].size(),false));
+    vector<pair<int, int>> meltList;
 
-    while(true)
+    q.push({0,0});
+    visited[0][0] = true;
+    while(!q.empty())
     {
-        fill(&visited[0][0], &visited[0][0] + 104 * 104, 0);
-        v.clear();
-        go(0, 0);
-        cnt2 = v.size();
-        for(pair<int, int> b : v)
-        { 
-            a[b.first][b.second] = 0;
-        }  
+        auto[y,x] = q.front();
+        q.pop();
 
-        bool flag = 0;
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < 4; i++)
         {
-            for(int j = 0; j < m; j++)
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            
+            if(ny >= 0 && ny < board.size() && nx >= 0 && nx < board[0].size())
             {
-                if(a[i][j] != 0)
+                if(!visited[ny][nx] && board[ny][nx] == 0)
                 {
-                    flag = 1;
+                    q.push({ny,nx});
+                    visited[ny][nx] = true;
+                }
+                else if(board[ny][nx] == 1)
+                {
+                    meltList.push_back({ny,nx});
                 }
             }
         }
-        cnt++;
-        if(!flag) break;
     }
 
-    cout << cnt << '\n' << cnt2;
+    for(auto [y,x] : meltList)
+    {
+        board[y][x] = 0;
+    }
+}
+int main()
+{
+    FAST_IO
+    int N, M; cin >> N >> M;
+    board.assign(N, vector<int>(M));
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < M; j++)
+        {
+            cin >> board[i][j];
+        }
+    }
+    while(true)
+    {
+        preCnt = 0;
+        for(int i = 0; i < N; i++)
+        {
+            for(int j = 0; j < M; j++)
+            {
+                if(board[i][j] == 1)
+                {
+                    preCnt++;
+                }
+            }
+        }
+        melt();
+        if(isOk())
+        {
+            ret++;
+            break;
+        }
+        ret++;
+    }
+    cout << ret << endl << preCnt;
 
 
 }
