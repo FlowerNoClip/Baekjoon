@@ -1,38 +1,46 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 using namespace std;
-int n, r, temp, root;
-vector<int> adj[54];
+#define endl '\n'
+vector<int> adj[55];
+int root, d;
 int dfs(int here)
 {
     int ret = 0;
-    int child = 0;
+    int node = 0;
     for(int there : adj[here])
     {
-        if (there == r) continue;
+        if(there == d) continue;
         ret += dfs(there);
-        child++;
+        node++;
     }
-    if(child == 0) return 1;
+    if(node == 0) return 1;
     return ret;
-
-
 }
-
-int main(){
-    ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-    cin >> n;
-    for(int i = 0; i < n; i++)
+int main()
+{
+    FAST_IO
+    int N; cin >> N;
+    int v;
+    for(int i = 0; i < N; i++)
     {
-        cin >> temp;
-        if(temp == -1) root = i;
-        else adj[temp].push_back(i);
-    }
-    cin >> r;
-    if(r==root)
-    {
-        cout << 0 << '\n'; return 0;
+        cin >> v;
+        if(v == -1)
+        {
+            root = i;
+        }
+        else
+        {
+            adj[v].push_back(i);
+        }
+        
     }
 
-    cout << dfs(root) << '\n';
-    return 0;
+    cin >> d;
+    if(d == root)
+    {
+        cout << 0 << endl;
+        return 0;
+    }
+    cout << dfs(root) << endl;
 }
