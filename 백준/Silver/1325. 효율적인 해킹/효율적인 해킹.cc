@@ -1,38 +1,46 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#define FAST_IO ios::sync_with_stdio(0); cout.tie(0); cin.tie(0);
 using namespace std;
-#define FAST_IO ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-int n, m;
-int a, b;
-vector<int> v[10004];
-int visited[10004];
-int dp[10004];
-int mx;
+#define endl '\n'
+int a, b, mx;
+vector<int> adj[10001];
+bool visited[10001];
+int dp[10001];
 int dfs(int here)
 {
-    visited[here] = 1;
+    visited[here] = true;
     int ret = 1;
-    for(int there : v[here])
+    for(int next : adj[here])
     {
-        if(visited[there]) continue;
-        ret += dfs(there);
+        if(!visited[next])
+        {
+            ret+=dfs(next);
+        }        
     }
     return ret;
 }
-
 int main()
 {
     FAST_IO
-    cin >> n >> m;
-    while(m--)
+    int N, M; cin >> N >> M;
+    while(M--)
     {
         cin >> a >> b;
-        v[b].push_back(a);
+        adj[b].push_back(a);
     }
-    for(int i = 1; i <= n; i++)
+    for(int i = 1; i <= N; i++)
     {
-        memset(visited, 0, sizeof(visited));
+        memset(visited, false, sizeof(visited));
         dp[i] = dfs(i);
         mx = max(dp[i], mx);
     }
-    for(int i = 1; i <= n; i++) if(mx == dp[i]) cout << i << " ";
+
+    for(int i = 1; i <= N; i++)
+    {
+        if(dp[i] == mx)
+        {
+            cout << i << ' ';
+        }
+    }
+    
 }
