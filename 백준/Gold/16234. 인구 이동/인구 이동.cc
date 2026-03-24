@@ -1,89 +1,78 @@
 #include <bits/stdc++.h>
-using namespace std;
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define endl '\n'
+using namespace std;
+vector<vector<int>> board;
+vector<vector<int>> visited;
+int N, L, R;
+const int dx[4] = {0, 0, 1, -1};
+const int dy[4] = {1, -1, 0, 0};
+bool move_population() {
+    visited.assign(N, vector<int>(N, 0));
+    bool is_moved = false;
 
-int n, l, r;
-int board[54][54];
-int visited[54][54];
-int dx[] = {0, 0, 1, -1};
-int dy[] = {1, -1, 0, 0};
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            if(!visited[i][j]) {
+                vector<pair<int,int>> nodes;
+                queue<pair<int, int>> q;
+                q.push({i, j});
+                visited[i][j] = 1;
+                int sum = board[i][j];
+                nodes.push_back({i, j});
+                while(!q.empty())
+                {
+                    auto[y,x] = q.front();
+                    q.pop();
+                    for(int i = 0; i < 4; i++)
+                    {
+                        int ny = y + dy[i];
+                        int nx = x + dx[i];
+                        if(ny >= 0 && ny < N && nx >= 0 && nx < N)
+                        if(!visited[ny][nx])
+                        {
 
-inline bool isValid(int y, int x) {
-    return (0 <= y && y < n && 0 <= x && x < n && !visited[y][x]);
-}
-bool bfs(int sy, int sx)
-{
-    queue<pair<int, int>> q;
-    vector<pair<int, int>> united;
-    
-    q.push({sy, sx});
-    visited[sy][sx] = 1;
-    united.push_back({sy, sx});
-    int sum = board[sy][sx];
-    while(!q.empty())
-    {
-        auto[y,x] = q.front(); q.pop();
-        for(int i = 0; i < 4; i++)
-        {
-           int ny = y + dy[i];
-           int nx = x + dx[i];
-           if(!isValid(ny,nx)) continue;
-           
-           int diff = abs(board[y][x] - board[ny][nx]);
-           if(l <= diff && r >= diff)
-           {
-                q.push({ny, nx});
-                visited[ny][nx] = 1;
-                united.push_back({ny, nx});
-                sum += board[ny][nx];
-           }
+                            if(abs(board[ny][nx] - board[y][x]) >= L && abs(board[ny][nx] - board[y][x]) <= R)
+                            {
+                                q.push({ny,nx});
+                                visited[ny][nx] = 1;
+                                nodes.push_back({ny, nx});
+                                sum += board[ny][nx];
+                            }
+                        }
+                    }
+                }
+
+                
+                if(nodes.size() > 1) {
+                    is_moved = true;
+                    int avg = sum / nodes.size();
+                    for(auto p : nodes) board[p.first][p.second] = avg;
+                }
+            }
         }
     }
-    if(united.size() <= 1) return false;
-
-    int avg = sum / united.size();
-
-    for(auto [y,x] : united)
-    {
-        board[y][x] = avg;
-    }
-    return true;
+    return is_moved;
 }
 
-
-int main() {
+int main()
+{
     FAST_IO
-    cin >> n >> l >> r;
-    for(int i = 0; i < n; i ++)
+    cin >> N >> L >> R;
+    board.assign(N, vector<int>(N));
+    visited.assign(N, vector<int>(N));
+    for(int i = 0 ; i < N; i++)
     {
-        for(int j = 0; j < n; j++)
+        for(int j = 0; j < N; j++)
         {
             cin >> board[i][j];
         }
     }
-
-    int ret = 0;
-    while(true)
+    int day = 0;
+    while(move_population())
     {
-        memset(visited, 0, sizeof(visited));
-
-        bool flag = false;
-
-        for(int i = 0; i < n; i++)
-        {
-            for(int j = 0; j < n; j++)
-            {
-                if(!visited[i][j])
-                {
-                    if(bfs(i, j)) flag = true;
-                }
-            }
-        }
-
-        if(!flag) break;
-
-        ret++;
+        day++;
     }
+    cout << day;
 
-    cout << ret << '\n';
 }
