@@ -1,74 +1,80 @@
 #include <bits/stdc++.h>
-using namespace std;
-
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-
-int n, m;
-int board[54][54];
-int visited[54][54];
-int distArr[54][54];
-
-int dx[] = {0, 0, 1, -1};   
-int dy[] = {1, -1, 0, 0};   
-
-inline bool isValid(int y, int x) {
-    return (0 <= y && y < n && 0 <= x && x < m && !visited[y][x] && board[y][x]);
-}
-
-int bfs(int sy, int sx) {
-    queue<pair<int,int>> q;
-    memset(visited, 0, sizeof(visited));
-    memset(distArr, -1, sizeof(distArr));
-
-    visited[sy][sx] = 1;
-    distArr[sy][sx] = 0;
-    q.push({sy, sx});
-
-    int localMax = 0;
-
-    while (!q.empty()) {
-        auto [y, x] = q.front(); q.pop();
-
-        for (int dir = 0; dir < 4; dir++) {
-            int ny = y + dy[dir];
-            int nx = x + dx[dir];
-            if (!isValid(ny, nx)) continue;
-
-            visited[ny][nx] = 1;
-            distArr[ny][nx] = distArr[y][x] + 1;
-            localMax = max(localMax, distArr[ny][nx]);
-            q.push({ny, nx});
-        }
-    }
-    return localMax;
-}
-
-int main() {
-    FAST_IO
-
-    cin >> n >> m;
-
-    for (int i = 0; i < n; i++) 
+#define endl '\n'
+using namespace std;
+vector<vector<int>> board;
+vector<vector<int>> visited;
+int N, M;
+string temp;
+const int dx[4] = {0, 0, 1, -1};
+const int dy[4] = {1, -1, 0, 0};
+void bfs(int y, int x)
+{
+    vector<vector<int>> visiteds(N, vector<int>(M));
+    queue<pair<int, int>> q;
+    q.push({y, x});
+    visiteds[y][x] = 1;
+    while(!q.empty())
     {
-        string temp; cin >> temp;
-        for (int j = 0; j < m; j++) 
+        auto[y,x] = q.front();
+        q.pop();
+        for(int i = 0; i < 4; i++)
         {
-            if (temp[j] == 'L') board[i][j] = 1; 
-            else if (temp[j] == 'W') board[i][j] = 0;
-        }
-    }
-
-    int ret = 0; 
-    for (int y = 0; y < n; y++) 
-    {
-        for (int x = 0; x < m; x++) 
-        {
-            if (board[y][x] == 1) {
-                ret = max(ret, bfs(y, x));
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+            if(ny >= 0 && ny < N && nx >= 0 && nx < M)
+            {
+                if(board[ny][nx] == 1 && !visiteds[ny][nx])
+                {
+                    visiteds[ny][nx] = visiteds[y][x] + 1;
+                    q.push({ny, nx});
+                    if(visited[ny][nx] < visiteds[ny][nx])
+                    {
+                        visited[ny][nx] = visiteds[ny][nx];
+                    }
+                }
             }
         }
     }
-
-    cout << ret << '\n';
-    return 0;
+}
+int main()
+{
+    FAST_IO
+    cin >> N >> M;
+    board.assign(N, vector<int>(M));
+    visited.assign(N, vector<int>(M));
+    for(int i = 0; i < N; i++)
+    {
+        cin >> temp;
+        for(int j = 0; j < temp.length(); j++)
+        {
+            if(temp[j] =='L')
+            {
+                board[i][j] = 1;
+            }
+            else if(temp[j] =='W')
+            {
+                board[i][j] = 0;
+            }
+        }
+    }
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < M; j++)
+        {
+            if(board[i][j] == 1)
+            {
+                bfs(i, j);
+            }
+        }
+    }
+    int maxNum = 0;
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < M; j++)
+        {
+            maxNum = max(maxNum, visited[i][j]);
+        }
+    }
+    cout << maxNum -1;
 }
