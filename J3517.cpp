@@ -2,7 +2,7 @@
 #define FAST_IO ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define ll long long
 using namespace std;
-int binarySearch(vector<int> v, int target)
+int binarySearch(vector<int> &v, int target)
 {
     int left = 0, right = v.size() -1;
     while(left <= right)
